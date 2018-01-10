@@ -1,0 +1,43 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "7ZZGga/NOgmEaDqRZvrhkNedbL8=",
+			"path": "github.com/fatih/set",
+			"revision": "24e92685f4763e7a95dbcae78a571bdc8dc7f766",
+			"revisionTime": "2017-07-04T05:58:01Z"
+		},
+		{
+			"checksumSHA1": "40vJyUB4ezQSn/NSadsKEOrudMc=",
+			"path": "github.com/inconshreveable/mousetrap",
+			"revision": "76626ae9c91c4f2a10f34cad8ce83ea42c93bb75",
+			"revisionTime": "2014-10-17T20:07:13Z"
+		},
+		{
+			"checksumSHA1": "dRJZvT5HWleLgwM8w7g09IE6Q4w=",
+			"path": "github.com/mattn/go-zglob",
+			"revision": "4959821b481786922ac53e7ef25c61ae19fb7c36",
+			"revisionTime": "2017-12-30T10:41:32Z"
+		},
+		{
+			"checksumSHA1": "8yK2nkx5rtMHoQQH8D5/+fhTrWQ=",
+			"path": "github.com/mattn/go-zglob/fastwalk",
+			"revision": "4959821b481786922ac53e7ef25c61ae19fb7c36",
+			"revisionTime": "2017-12-30T10:41:32Z"
+		},
+		{
+			"checksumSHA1": "aG5wPXVGAEu90TjPFNZFRtox2Zo=",
+			"path": "github.com/spf13/cobra",
+			"revision": "b95ab734e27d33e0d8fbabf71ca990568d4e2020",
+			"revisionTime": "2017-12-31T10:15:56Z"
+		},
+		{
+			"checksumSHA1": "fKq6NiaqP3DFxnCRF5mmpJWTSUA=",
+			"path": "github.com/spf13/pflag",
+			"revision": "4c012f6dcd9546820e378d0bdda4d8fc772cdfea",
+			"revisionTime": "2017-11-06T14:28:49Z"
+		}
+	],
+	"rootPath": "github.com/stephane-martin/gotail"
+}
