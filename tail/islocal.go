@@ -2,247 +2,247 @@ package tail
 
 func isLocalFS(magic int64) bool {
 	switch magic {
-	case S_MAGIC_AAFS:
+	case sMAGICAAFS:
 		return true
-	case S_MAGIC_ACFS:
+	case sMAGICACFS:
 		return false
-	case S_MAGIC_ADFS:
+	case sMAGICADFS:
 		return true
-	case S_MAGIC_AFFS:
+	case sMAGICAFFS:
 		return true
-	case S_MAGIC_AFS:
+	case sMAGICAFS:
 		return false
-	case S_MAGIC_ANON_INODE_FS:
+	case sMAGICANONINODEFS:
 		return true
-	case S_MAGIC_APFS:
+	case sMAGICAPFS:
 		return true
-	case S_MAGIC_AUFS:
+	case sMAGICAUFS:
 		return false
-	case S_MAGIC_AUTOFS:
+	case sMAGICAUTOFS:
 		return true
-	case S_MAGIC_BALLOON_KVM:
+	case sMAGICBALLOONKVM:
 		return true
-	case S_MAGIC_BEFS:
+	case sMAGICBEFS:
 		return true
-	case S_MAGIC_BDEVFS:
+	case sMAGICBDEVFS:
 		return true
-	case S_MAGIC_BFS:
+	case sMAGICBFS:
 		return true
-	case S_MAGIC_BPF_FS:
+	case sMAGICBPFFS:
 		return true
-	case S_MAGIC_BINFMTFS:
+	case sMAGICBINFMTFS:
 		return true
-	case S_MAGIC_BTRFS:
+	case sMAGICBTRFS:
 		return true
-	case S_MAGIC_BTRFS_TEST:
+	case sMAGICBTRFSTEST:
 		return true
-	case S_MAGIC_CEPH:
+	case sMAGICCEPH:
 		return false
-	case S_MAGIC_CGROUP:
+	case sMAGICCGROUP:
 		return true
-	case S_MAGIC_CGROUP2:
+	case sMAGICCGROUP2:
 		return true
-	case S_MAGIC_CIFS:
+	case sMAGICCIFS:
 		return false
-	case S_MAGIC_CODA:
+	case sMAGICCODA:
 		return false
-	case S_MAGIC_COH:
+	case sMAGICCOH:
 		return true
-	case S_MAGIC_CONFIGFS:
+	case sMAGICCONFIGFS:
 		return true
-	case S_MAGIC_CRAMFS:
+	case sMAGICCRAMFS:
 		return true
-	case S_MAGIC_CRAMFS_WEND:
+	case sMAGICCRAMFSWEND:
 		return true
-	case S_MAGIC_DAXFS:
+	case sMAGICDAXFS:
 		return true
-	case S_MAGIC_DEBUGFS:
+	case sMAGICDEBUGFS:
 		return true
-	case S_MAGIC_DEVFS:
+	case sMAGICDEVFS:
 		return true
-	case S_MAGIC_DEVPTS:
+	case sMAGICDEVPTS:
 		return true
-	case S_MAGIC_ECRYPTFS:
+	case sMAGICECRYPTFS:
 		return true
-	case S_MAGIC_EFIVARFS:
+	case sMAGICEFIVARFS:
 		return true
-	case S_MAGIC_EFS:
+	case sMAGICEFS:
 		return true
-	case S_MAGIC_EXOFS:
+	case sMAGICEXOFS:
 		return true
-	case S_MAGIC_EXT:
+	case sMAGICEXT:
 		return true
-	case S_MAGIC_EXT2:
+	case sMAGICEXT2:
 		return true
-	case S_MAGIC_EXT2_OLD:
+	case sMAGICEXT2OLD:
 		return true
-	case S_MAGIC_F2FS:
+	case sMAGICF2FS:
 		return true
-	case S_MAGIC_FAT:
+	case sMAGICFAT:
 		return true
-	case S_MAGIC_FHGFS:
+	case sMAGICFHGFS:
 		return false
-	case S_MAGIC_FUSEBLK:
+	case sMAGICFUSEBLK:
 		return false
-	case S_MAGIC_FUSECTL:
+	case sMAGICFUSECTL:
 		return false
-	case S_MAGIC_FUTEXFS:
+	case sMAGICFUTEXFS:
 		return true
-	case S_MAGIC_GFS:
+	case sMAGICGFS:
 		return false
-	case S_MAGIC_GPFS:
+	case sMAGICGPFS:
 		return false
-	case S_MAGIC_HFS:
+	case sMAGICHFS:
 		return true
-	case S_MAGIC_HFS_PLUS:
+	case sMAGICHFSPLUS:
 		return true
-	case S_MAGIC_HFS_X:
+	case sMAGICHFSX:
 		return true
-	case S_MAGIC_HOSTFS:
+	case sMAGICHOSTFS:
 		return true
-	case S_MAGIC_HPFS:
+	case sMAGICHPFS:
 		return true
-	case S_MAGIC_HUGETLBFS:
+	case sMAGICHUGETLBFS:
 		return true
-	case S_MAGIC_MTD_INODE_FS:
+	case sMAGICMTDINODEFS:
 		return true
-	case S_MAGIC_IBRIX:
+	case sMAGICIBRIX:
 		return false
-	case S_MAGIC_INOTIFYFS:
+	case sMAGICINOTIFYFS:
 		return true
-	case S_MAGIC_ISOFS:
+	case sMAGICISOFS:
 		return true
-	case S_MAGIC_ISOFS_R_WIN:
+	case sMAGICISOFSRWIN:
 		return true
-	case S_MAGIC_ISOFS_WIN:
+	case sMAGICISOFSWIN:
 		return true
-	case S_MAGIC_JFFS:
+	case sMAGICJFFS:
 		return true
-	case S_MAGIC_JFFS2:
+	case sMAGICJFFS2:
 		return true
-	case S_MAGIC_JFS:
+	case sMAGICJFS:
 		return true
-	case S_MAGIC_KAFS:
+	case sMAGICKAFS:
 		return false
-	case S_MAGIC_LOGFS:
+	case sMAGICLOGFS:
 		return true
-	case S_MAGIC_LUSTRE:
+	case sMAGICLUSTRE:
 		return false
-	case S_MAGIC_M1FS:
+	case sMAGICM1FS:
 		return true
-	case S_MAGIC_MINIX:
+	case sMAGICMINIX:
 		return true
-	case S_MAGIC_MINIX_30:
+	case sMAGICMINIX30:
 		return true
-	case S_MAGIC_MINIX_V2:
+	case sMAGICMINIXV2:
 		return true
-	case S_MAGIC_MINIX_V2_30:
+	case sMAGICMINIXV230:
 		return true
-	case S_MAGIC_MINIX_V3:
+	case sMAGICMINIXV3:
 		return true
-	case S_MAGIC_MQUEUE:
+	case sMAGICMQUEUE:
 		return true
-	case S_MAGIC_MSDOS:
+	case sMAGICMSDOS:
 		return true
-	case S_MAGIC_NCP:
+	case sMAGICNCP:
 		return false
-	case S_MAGIC_NFS:
+	case sMAGICNFS:
 		return false
-	case S_MAGIC_NFSD:
+	case sMAGICNFSD:
 		return false
-	case S_MAGIC_NILFS:
+	case sMAGICNILFS:
 		return true
-	case S_MAGIC_NSFS:
+	case sMAGICNSFS:
 		return true
-	case S_MAGIC_NTFS:
+	case sMAGICNTFS:
 		return true
-	case S_MAGIC_OPENPROM:
+	case sMAGICOPENPROM:
 		return true
-	case S_MAGIC_OCFS2:
+	case sMAGICOCFS2:
 		return false
-	case S_MAGIC_OVERLAYFS:
+	case sMAGICOVERLAYFS:
 		return false
-	case S_MAGIC_PANFS:
+	case sMAGICPANFS:
 		return false
-	case S_MAGIC_PIPEFS:
+	case sMAGICPIPEFS:
 		return false
-	case S_MAGIC_PRL_FS:
+	case sMAGICPRLFS:
 		return false
-	case S_MAGIC_PROC:
+	case sMAGICPROC:
 		return true
-	case S_MAGIC_PSTOREFS:
+	case sMAGICPSTOREFS:
 		return true
-	case S_MAGIC_QNX4:
+	case sMAGICQNX4:
 		return true
-	case S_MAGIC_QNX6:
+	case sMAGICQNX6:
 		return true
-	case S_MAGIC_RAMFS:
+	case sMAGICRAMFS:
 		return true
-	case S_MAGIC_RDTGROUP:
+	case sMAGICRDTGROUP:
 		return true
-	case S_MAGIC_REISERFS:
+	case sMAGICREISERFS:
 		return true
-	case S_MAGIC_ROMFS:
+	case sMAGICROMFS:
 		return true
-	case S_MAGIC_RPC_PIPEFS:
+	case sMAGICRPCPIPEFS:
 		return true
-	case S_MAGIC_SECURITYFS:
+	case sMAGICSECURITYFS:
 		return true
-	case S_MAGIC_SELINUX:
+	case sMAGICSELINUX:
 		return true
-	case S_MAGIC_SMACK:
+	case sMAGICSMACK:
 		return true
-	case S_MAGIC_SMB:
+	case sMAGICSMB:
 		return false
-	case S_MAGIC_SMB2:
+	case sMAGICSMB2:
 		return false
-	case S_MAGIC_SNFS:
+	case sMAGICSNFS:
 		return false
-	case S_MAGIC_SOCKFS:
+	case sMAGICSOCKFS:
 		return true
-	case S_MAGIC_SQUASHFS:
+	case sMAGICSQUASHFS:
 		return true
-	case S_MAGIC_SYSFS:
+	case sMAGICSYSFS:
 		return true
-	case S_MAGIC_SYSV2:
+	case sMAGICSYSV2:
 		return true
-	case S_MAGIC_SYSV4:
+	case sMAGICSYSV4:
 		return true
-	case S_MAGIC_TMPFS:
+	case sMAGICTMPFS:
 		return true
-	case S_MAGIC_TRACEFS:
+	case sMAGICTRACEFS:
 		return true
-	case S_MAGIC_UBIFS:
+	case sMAGICUBIFS:
 		return true
-	case S_MAGIC_UDF:
+	case sMAGICUDF:
 		return true
-	case S_MAGIC_UFS:
+	case sMAGICUFS:
 		return true
-	case S_MAGIC_UFS_BYTESWAPPED:
+	case sMAGICUFSBYTESWAPPED:
 		return true
-	case S_MAGIC_USBDEVFS:
+	case sMAGICUSBDEVFS:
 		return true
-	case S_MAGIC_V9FS:
+	case sMAGICV9FS:
 		return true
-	case S_MAGIC_VMHGFS:
+	case sMAGICVMHGFS:
 		return false
-	case S_MAGIC_VXFS:
+	case sMAGICVXFS:
 		return false
-	case S_MAGIC_VZFS:
+	case sMAGICVZFS:
 		return true
-	case S_MAGIC_WSLFS:
+	case sMAGICWSLFS:
 		return true
-	case S_MAGIC_XENFS:
+	case sMAGICXENFS:
 		return true
-	case S_MAGIC_XENIX:
+	case sMAGICXENIX:
 		return true
-	case S_MAGIC_XFS:
+	case sMAGICXFS:
 		return true
-	case S_MAGIC_XIAFS:
+	case sMAGICXIAFS:
 		return true
-	case S_MAGIC_ZFS:
+	case sMAGICZFS:
 		return true
-	case S_MAGIC_ZSMALLOC:
+	case sMAGICZSMALLOC:
 		return true
 	default:
 		//fmt.Fprintln(os.Stderr, "default case", magic)

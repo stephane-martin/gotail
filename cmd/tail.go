@@ -14,17 +14,10 @@ import (
 	"github.com/stephane-martin/gotail/tail"
 )
 
-// tailCmd represents the tail command
-var RootCmd = &cobra.Command{
-	Use:   "tail",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
-	Args: cobra.MinimumNArgs(1),
+var rootCmd = &cobra.Command{
+	Use:   "gotail",
+	Short: "Tail and follow files like tail -f in go",
+	Args:  cobra.MinimumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		ctx, cancel := context.WithCancel(context.Background())
@@ -36,24 +29,45 @@ to quickly create a Cobra application.`,
 		}()
 
 		if len(args) == 1 && follow && !recursive {
+			fmt.Fprintln(os.Stderr, "aa")
 			filename := args[0]
 			output := make(chan string)
+			errors := make(chan error)
 			go tail.FollowFile(
 				ctx,
 				tail.SleepPeriod(time.Second*time.Duration(pause)),
 				tail.Filename(filename),
 				tail.NLines(int(nbLines)),
 				tail.LinesChan(output),
+				tail.ErrorChan(errors),
 			)
 
 			n := 1
-			for l := range output {
-				if printLineNumbers {
-					fmt.Println(n, l)
-				} else {
-					fmt.Println(l)
+			for {
+				if output == nil && errors == nil {
+					break
 				}
-				n++
+				select {
+				case l, more := <-output:
+					if more {
+						if printLineNumbers {
+							fmt.Println(n, l)
+						} else {
+							fmt.Println(l)
+						}
+						n++
+					} else {
+						output = nil
+					}
+				case err, more := <-errors:
+					if more {
+						if err != nil {
+							fmt.Fprintln(os.Stderr, err)
+						}
+					} else {
+						errors = nil
+					}
+				}
 			}
 		}
 
@@ -170,9 +184,15 @@ var pause uint
 var recursive bool
 
 func init() {
-	RootCmd.Flags().UintVarP(&nbLines, "nblines", "n", 10, "how many lines to read")
-	RootCmd.Flags().BoolVarP(&printLineNumbers, "linenb", "l", false, "print line numbers")
-	RootCmd.Flags().BoolVarP(&follow, "follow", "f", false, "follow file")
-	RootCmd.Flags().UintVarP(&pause, "pause", "p", 1, "pause period in seconds")
-	RootCmd.Flags().BoolVarP(&recursive, "recursive", "r", false, "recursively watch directory")
+	rootCmd.Flags().UintVarP(&nbLines, "nblines", "n", 10, "how many lines to read")
+	rootCmd.Flags().BoolVarP(&printLineNumbers, "linenb", "l", false, "print line numbers")
+	rootCmd.Flags().BoolVarP(&follow, "follow", "f", false, "follow file, like tail -F")
+	rootCmd.Flags().UintVarP(&pause, "pause", "p", 1, "pause period in seconds")
+	rootCmd.Flags().BoolVarP(&recursive, "recursive", "r", false, "recursively watch directory")
+	rootCmd.Use = "gotail [flags] file1 [file2...]"
+}
+
+// Execute runs the tail command.
+func Execute() error {
+	return rootCmd.Execute()
 }

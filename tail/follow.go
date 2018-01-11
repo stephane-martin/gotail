@@ -6,9 +6,16 @@ import (
 	"time"
 )
 
+// FollowFiles watches a list of files for new lines, like tail -F would do,
+// and report the new lines to a FileLine channel given by options.
+// FollowFiles does not return immediatly. The context can be used to stop
+// following. If the context is canceled, eventually the given channels will
+// be closed.
+// If given, the results FileLine channel must be consumed by the client.
+// If given, the error channel must be consumed by the client.
 func FollowFiles(ctx context.Context, opts ...TailFilesOpt) {
 	var wg sync.WaitGroup
-	env := TailFilesOpts{
+	env := tailFilesOpts{
 		nbLines: 10,
 		period:  time.Second,
 	}
@@ -83,8 +90,15 @@ func FollowFiles(ctx context.Context, opts ...TailFilesOpt) {
 	}
 }
 
+// FollowFile watches a single file for new lines and reports the new lines
+// to a string channel given by options.
+// FollowFile does not return immediatly. The context can be used to stop
+// following. If the context is canceled, eventually the given channels will
+// be closed.
+// If given, the results string channel must be consumed by the client.
+// If given, the error channel must be consumed by the client.
 func FollowFile(ctx context.Context, opts ...TailFileOpt) {
-	env := TailFileOpts{
+	env := tailFileOpts{
 		nbLines: 10,
 		period:  time.Second,
 	}
@@ -109,18 +123,24 @@ func FollowFile(ctx context.Context, opts ...TailFileOpt) {
 	}
 
 	if fspec.hasClassicalFollow() {
+		//fmt.Fprintln(os.Stderr, "classical")
 		var followWg sync.WaitGroup
 		followClassical(ctx.Done(), &followWg, fspec, env.period)
 		followWg.Wait()
 	} else {
+		//fmt.Fprintln(os.Stderr, "notify")
 		n, err := newNotifier(env.errors)
 		if err != nil && env.errors != nil {
+			//fmt.Fprintln(os.Stderr, "error", err)
 			env.errors <- err
-		} else if err != nil {
+		} else if err == nil {
 			n.AddFile(fspec)
-			n.Start()
-			<-ctx.Done()
-			n.Stop()
+			if err = n.Start(); err != nil && env.errors != nil {
+				env.errors <- err
+			} else if err == nil {
+				<-ctx.Done()
+				n.Stop()
+			}
 		}
 	}
 }

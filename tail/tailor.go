@@ -13,6 +13,8 @@ import (
 	"github.com/mattn/go-zglob/fastwalk"
 )
 
+// Tailor can be used to monitor whole directories and report new lines in files
+// that live inside the directories.
 type Tailor struct {
 	results       chan FileLine
 	errors        chan error
@@ -28,6 +30,10 @@ type Tailor struct {
 	cwd           string
 }
 
+// NewTailor builds a *Tailor. The detected new lines will be sent in the results
+// channel. Errors that may happen in processing will be sent to errors.
+// Both results and errors channels can be nil.
+// If one of them is not nil, it must be consumed by the client.
 func NewTailor(results chan FileLine, errors chan error) (t *Tailor, err error) {
 	t = &Tailor{
 		results:       results,
@@ -115,6 +121,8 @@ func (t *Tailor) abs(rel string) string {
 	return filepath.Join(t.cwd, rel)
 }
 
+// Close stops the Tailor. New content will not be detected anymore. Eventually
+// the results and errors channels will be closed.
 func (t *Tailor) Close() {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -149,6 +157,7 @@ func (t *Tailor) Close() {
 	}
 }
 
+// CloseOnContext closes the Tailor when the given context is canceled.
 func (t *Tailor) CloseOnContext(ctx context.Context) {
 	go func() {
 		<-ctx.Done()
@@ -196,6 +205,11 @@ func (t *Tailor) lsrecurse(dirname string) (files []string, dirs []string, err e
 	return files, dirs, err
 }
 
+// AddDirectory tells the Tailor to watch globally a directory.
+// The existing files and the new created files directly under dirname will be monitored
+// for new content. Sub-directories are not added.
+// The filter is a function to select which files to monitor, based on the
+// name of a file (relative name of the file in its parent directory).
 func (t *Tailor) AddDirectory(dirname string, filter FilterFunc) (err error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -230,6 +244,11 @@ func (t *Tailor) AddDirectory(dirname string, filter FilterFunc) (err error) {
 	return nil
 }
 
+// AddRecursiveDirectory tells the Tailor to watch globally and recursively a directory.
+// The existing files and the new created files inside dirname will be monitored
+// for new content. Sub-directories of dirname are added too.
+// The filter is a function to select which files to monitor, based on the
+// name of a file (relative name of the file relative to the top-most directory).
 func (t *Tailor) AddRecursiveDirectory(dirname string, filter FilterFunc) error {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -275,6 +294,7 @@ func (t *Tailor) AddRecursiveDirectory(dirname string, filter FilterFunc) error 
 	return nil
 }
 
+// AddFiles tells the Tailor to watch some files.
 func (t *Tailor) AddFiles(filenames []string) error {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -284,6 +304,7 @@ func (t *Tailor) AddFiles(filenames []string) error {
 	return nil
 }
 
+// AddFile tells the Tailor to watch a single file.
 func (t *Tailor) AddFile(filename string) (err error) {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -328,6 +349,7 @@ func (t *Tailor) addFile(filename string, new bool, mu *sync.Mutex) (err error) 
 	return nil
 }
 
+// FilterFunc is the type of filter functions.
 type FilterFunc func(relname string) bool
 
 type dirFilter struct {

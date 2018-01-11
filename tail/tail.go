@@ -1,3 +1,6 @@
+// Package tail provides tools to tail files in go. It also
+// provides tools to watch a file for new lines, or to watch
+// whole directories for new content.
 package tail
 
 import (
@@ -43,8 +46,13 @@ func selectTailFunc(file *os.File, infos os.FileInfo) (dotail tailFunc) {
 	return dotail
 }
 
+// TailFiles returns the N last lines of the given files to a FileLine channel.
+// TailFiles returns immediatly. The context can be used to stop the tailing.
+// The given channels will be closed at the end of the tailing or after the context has been canceled.
+// If given, the FileLine channel must be consumed by the client.
+// If given, the error channel must be consumed by the client.
 func TailFiles(ctx context.Context, opts ...TailFilesOpt) {
-	env := TailFilesOpts{
+	env := tailFilesOpts{
 		nbLines: 10,
 	}
 
@@ -93,8 +101,13 @@ func TailFiles(ctx context.Context, opts ...TailFilesOpt) {
 	}()
 }
 
+// TailFile returns the N last lines of the given file to a string channel.
+// TailFile returns immediatly. The context can be used to stop the tailing.
+// The given channels will be closed at the end of the tailing or after the context has been canceled.
+// If given, the string channel must be consumed by the client.
+// If given, the error channel must be consumed by the client.
 func TailFile(ctx context.Context, opts ...TailFileOpt) (err error) {
-	env := TailFileOpts{
+	env := tailFileOpts{
 		nbLines: 10,
 	}
 

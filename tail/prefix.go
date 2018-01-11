@@ -5,6 +5,7 @@ import (
 	"sync"
 )
 
+// FileError is an error that was generated when dealing with some given filename
 type FileError struct {
 	Filename string
 	Err      error

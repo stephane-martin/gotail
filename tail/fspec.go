@@ -271,7 +271,7 @@ func (f *fileSpec) recheck(notifyMode bool) {
 	return
 }
 
-func (fspec *fileSpec) initTail(ctx context.Context, pwg *sync.WaitGroup, nbLines int) {
+func (f *fileSpec) initTail(ctx context.Context, pwg *sync.WaitGroup, nbLines int) {
 	if pwg != nil {
 		defer pwg.Done()
 	}
@@ -279,38 +279,38 @@ func (fspec *fileSpec) initTail(ctx context.Context, pwg *sync.WaitGroup, nbLine
 	var infos os.FileInfo
 
 	var err error
-	if fspec.name == "-" {
+	if f.name == "-" {
 		file = os.Stdin
 	} else {
-		file, err = os.Open(fspec.name)
+		file, err = os.Open(f.name)
 	}
 
 	if err != nil {
-		fspec.tailable = false
-		fspec.file = nil
-		fspec.err = err
-		fspec.ignore = false
-		fspec.ino = 0
-		fspec.dev = 0
+		f.tailable = false
+		f.file = nil
+		f.err = err
+		f.ignore = false
+		f.ino = 0
+		f.dev = 0
 	} else {
 		infos, err = file.Stat()
 		if err != nil {
-			fspec.err = err
-			fspec.ignore = false
-			fspec.file = nil
+			f.err = err
+			f.ignore = false
+			f.file = nil
 			file.Close()
 		} else if !isTailable(infos.Mode()) {
-			fspec.err = fmt.Errorf("The file is not tailable")
-			fspec.tailable = false
-			fspec.ignore = false
-			fspec.file = nil
+			f.err = fmt.Errorf("The file is not tailable")
+			f.tailable = false
+			f.ignore = false
+			f.file = nil
 			file.Close()
 		} else {
 
 			var readPos int64
 			tailFinished := make(chan struct{})
 			go func() {
-				readPos, err = selectTailFunc(file, infos)(nbLines, fspec.writer)
+				readPos, err = selectTailFunc(file, infos)(nbLines, f.writer)
 				close(tailFinished)
 			}()
 			select {
@@ -320,30 +320,30 @@ func (fspec *fileSpec) initTail(ctx context.Context, pwg *sync.WaitGroup, nbLine
 			case <-tailFinished:
 			}
 			if err != nil {
-				fspec.err = err
-				fspec.ignore = false
-				fspec.file = nil
+				f.err = err
+				f.ignore = false
+				f.file = nil
 				file.Close()
 			} else {
 				infos, err = file.Stat()
 				if err != nil {
-					fspec.err = err
-					fspec.ignore = false
-					fspec.file = nil
+					f.err = err
+					f.ignore = false
+					f.file = nil
 					file.Close()
 				} else {
 					//fmt.Fprintln(os.Stderr, "readPos", readPos)
-					fspec.record(file, readPos, infos)
+					f.record(file, readPos, infos)
 					remote, err := fremote(file)
 					if err != nil {
-						fspec.remote = true
+						f.remote = true
 					} else {
-						fspec.remote = remote
+						f.remote = remote
 					}
 				}
 			}
 		}
 	}
-	fspec.logerror(fspec.err)
+	f.logerror(f.err)
 
 }
