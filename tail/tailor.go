@@ -31,10 +31,10 @@ type Tailor struct {
 }
 
 // NewTailor builds a *Tailor.
-
+//
 // The detected new lines will be sent in the results channel. Errors that may happen
 // in processing will be sent to errors.
-
+//
 // Both results and errors channels can be nil. If one of them is not nil,
 // it must be consumed by the client.
 func NewTailor(results chan FileLine, errors chan error) (t *Tailor, err error) {
