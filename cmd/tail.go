@@ -73,14 +73,19 @@ var rootCmd = &cobra.Command{
 
 		if len(args) == 1 && follow && recursive {
 			dirname := args[0]
-			output := make(chan tail.FileLine)
+			output := make(chan tail.FileLineID)
 			tailor, err := tail.NewTailor(output, nil)
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 			} else {
-				tailor.AddRecursiveDirectory(dirname, func(relname string) bool {
+				uid, err := tailor.AddRecursiveDirectory(dirname, func(relname string) bool {
 					return true
 				})
+				if err != nil {
+					fmt.Fprintln(os.Stderr, err)
+					return
+				}
+				fmt.Println("UID for directory watch:", uid.String())
 				tailor.CloseOnContext(ctx)
 				for fl := range output {
 					fmt.Println(fl.Filename, fl.Line)

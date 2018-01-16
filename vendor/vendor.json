@@ -27,6 +27,12 @@
 			"revisionTime": "2017-12-30T10:41:32Z"
 		},
 		{
+			"checksumSHA1": "B1iGaUz7NrjEmCjVdIgH5pvkTe8=",
+			"path": "github.com/oklog/ulid",
+			"revision": "b38f8fcd3b93fd0e63dae168550d51a485185d60",
+			"revisionTime": "2017-11-28T05:51:21Z"
+		},
+		{
 			"checksumSHA1": "aG5wPXVGAEu90TjPFNZFRtox2Zo=",
 			"path": "github.com/spf13/cobra",
 			"revision": "b95ab734e27d33e0d8fbabf71ca990568d4e2020",
