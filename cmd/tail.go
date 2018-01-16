@@ -29,9 +29,8 @@ var rootCmd = &cobra.Command{
 		}()
 
 		if len(args) == 1 && follow && !recursive {
-			fmt.Fprintln(os.Stderr, "aa")
 			filename := args[0]
-			output := make(chan string)
+			output := make(chan []byte)
 			errors := make(chan error)
 			go tail.FollowFile(
 				ctx,
@@ -51,9 +50,9 @@ var rootCmd = &cobra.Command{
 				case l, more := <-output:
 					if more {
 						if printLineNumbers {
-							fmt.Println(n, l)
+							fmt.Println(n, string(l))
 						} else {
-							fmt.Println(l)
+							fmt.Println(string(l))
 						}
 						n++
 					} else {
@@ -78,24 +77,24 @@ var rootCmd = &cobra.Command{
 			if err != nil {
 				fmt.Fprintln(os.Stderr, err)
 			} else {
-				uid, err := tailor.AddRecursiveDirectory(dirname, func(relname string) bool {
+				_, err := tailor.AddRecursiveDirectory(dirname, func(relname string) bool {
 					return true
 				})
 				if err != nil {
 					fmt.Fprintln(os.Stderr, err)
 					return
 				}
-				fmt.Println("UID for directory watch:", uid.String())
+				//fmt.Println("UID for directory watch:", uid.String())
 				tailor.CloseOnContext(ctx)
 				for fl := range output {
-					fmt.Println(fl.Filename, fl.Line)
+					fmt.Println(fl.Filename, string(fl.Line))
 				}
 			}
 		}
 
 		if len(args) == 1 && !follow {
 			filename := args[0]
-			output := make(chan string)
+			output := make(chan []byte)
 
 			err = tail.TailFile(
 				ctx,
@@ -111,9 +110,9 @@ var rootCmd = &cobra.Command{
 			n := 1
 			for l := range output {
 				if printLineNumbers {
-					fmt.Println(n, l)
+					fmt.Println(n, string(l))
 				} else {
-					fmt.Println(l)
+					fmt.Println(string(l))
 				}
 				n++
 			}
@@ -149,10 +148,10 @@ var rootCmd = &cobra.Command{
 				tail.MNLines(int(nbLines)),
 				tail.MLinesChan(output),
 			)
-			results := map[string]([]string){}
+			results := map[string]([][]byte){}
 			for fl := range output {
 				if _, ok := results[fl.Filename]; !ok {
-					results[fl.Filename] = make([]string, 0)
+					results[fl.Filename] = make([][]byte, 0)
 				}
 				results[fl.Filename] = append(results[fl.Filename], fl.Line)
 			}
@@ -169,9 +168,9 @@ var rootCmd = &cobra.Command{
 				n := 1
 				for _, l := range results[fname] {
 					if printLineNumbers {
-						fmt.Println(n, l)
+						fmt.Println(n, string(l))
 					} else {
-						fmt.Println(l)
+						fmt.Println(string(l))
 					}
 					n++
 				}
